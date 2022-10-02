@@ -93,7 +93,7 @@ int main()
                     iter = plane.countIterations(pixelLocation);
                     plane.iterationsToRGB(iter, R, G, B);
                     image[j + i * resolution.x].color = { R, G, B };
-                    cout << iter << endl;
+                    //cout << iter << endl;
                     //cout << image[i].position.x << endl;
                     //cout << "Color: " << image[j + i * resolution.x].color.r << " " << image[j + i * resolution.x].color.g << " " << image[j + i * resolution.x].color.b << endl;
 
