@@ -5,7 +5,7 @@
 #include <sstream>
 using namespace std;
 
-ComplexPlane::ComplexPlane(float aspectRatio)
+ComplexPlane::ComplexPlane(double aspectRatio)
 {
 	m_aspectRatio = aspectRatio;
 	m_view.setSize(BASE_WIDTH, -BASE_HEIGHT * m_aspectRatio);
@@ -16,22 +16,27 @@ ComplexPlane::ComplexPlane(float aspectRatio)
 void ComplexPlane::zoomIn()
 {
 	m_zoomCount++;
-	float sizeX = BASE_WIDTH * (pow(BASE_ZOOM, m_zoomCount));
-	float sizeY = BASE_HEIGHT * m_aspectRatio * (pow(BASE_ZOOM, m_zoomCount));
+	double sizeX = BASE_WIDTH * (pow(BASE_ZOOM, m_zoomCount));
+	double sizeY = BASE_HEIGHT * m_aspectRatio * (pow(BASE_ZOOM, m_zoomCount));
 	m_view.setSize(sizeX, sizeY);
 }
 
 void ComplexPlane::zoomOut()
 {
 	m_zoomCount--;
-	float sizeX = BASE_WIDTH * (pow(BASE_ZOOM, m_zoomCount));
-	float sizeY = BASE_HEIGHT * m_aspectRatio * (pow(BASE_ZOOM, m_zoomCount));
+	double sizeX = BASE_WIDTH * (pow(BASE_ZOOM, m_zoomCount));
+	double sizeY = BASE_HEIGHT * m_aspectRatio * (pow(BASE_ZOOM, m_zoomCount));
 	m_view.setSize(sizeX, sizeY);
 }
 
 void ComplexPlane::setCenter(Vector2f coord)
 {
 	m_view.setCenter(coord.x, coord.y);
+}
+
+View ComplexPlane::getView()
+{
+	return m_view;
 }
 
 void ComplexPlane::setMouseLoactaion(Vector2f coord)
@@ -72,7 +77,7 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		g = 0;
 		b = 0;
 	}
-	if (count <= 63 && count >= 57)
+	else if (count <= 63 && count >= 57)
 	{
 		r = 196;
 		g = 12;
@@ -114,7 +119,7 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		g = 19;
 		b = 207;
 	}
-	else
+	else if (count <= 8 && count >= 0)
 	{
 		r = 207;
 		g = 19;
