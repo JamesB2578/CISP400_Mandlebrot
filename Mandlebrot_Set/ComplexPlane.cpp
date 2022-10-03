@@ -60,7 +60,7 @@ void ComplexPlane::loadText(Text& text)
 	complex<double> z(0, 0);
 	size_t i = 0;
 
-	while (abs(z) < 2 && i < 64)
+	while (abs(z) < 2 && i < MAX_ITER)
 	{
 		z = z * z + c;
 		i++;
@@ -71,58 +71,20 @@ void ComplexPlane::loadText(Text& text)
 
 void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 {
-	if (count == 64)
+
+	for (int i = 64; i > 0; i--)
 	{
-		r = 0;
-		g = 0;
-		b = 0;
-	}
-	else if (count <= 63 && count >= 57)
-	{
-		r = 196;
-		g = 12;
-		b = 12;
-	}
-	else if (count <= 56 && count >= 49)
-	{
-		r = 230;
-		g = 223;
-		b = 46;
-	}
-	else if (count <= 48 && count >= 41)
-	{
-		r = 35;
-		g = 204;
-		b = 43;
-	}
-	else if (count <= 40 && count >= 33)
-	{
-		r = 48;
-		g = 29;
-		b = 219;
-	}
-	else if (count <= 32 && count >= 25)
-	{
-		r = 84;
-		g = 19;
-		b = 207;
-	}
-	else if (count <= 24 && count >= 17)
-	{
-		r = 147;
-		g = 19;
-		b = 207;
-	}
-	else if (count <= 16 && count >= 9)
-	{
-		r = 191;
-		g = 19;
-		b = 207;
-	}
-	else if (count <= 8 && count >= 0)
-	{
-		r = 207;
-		g = 19;
-		b = 131;
+		if (count == MAX_ITER)
+		{
+			r = 0;
+			g = 0;
+			b = 0;
+		}
+		else if (count == i)
+		{
+			r = 188 - ((i * 16) + 8);
+			g = 188 - ((i * 8) + 4);
+			b = 250;
+		}
 	}
 }
