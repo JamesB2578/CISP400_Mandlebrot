@@ -9,48 +9,63 @@ using namespace sf;
 
 int main()
 {
+    // Create variables and store resolution and aspectRatio
     Vector2f resolution;
     resolution.x = VideoMode::getDesktopMode().width;
     resolution.y = VideoMode::getDesktopMode().height;
     double aspectRatio = resolution.y / resolution.x;
+
+    // Create window
     VideoMode vm(resolution.x, resolution.y);
     RenderWindow window(VideoMode(resolution.x, resolution.y), "Mandlebrot Set", Style::Default);
 
+    // object with ComplexPlane class
     ComplexPlane plane(aspectRatio);
 
+    // Create and set text object for heads up display
     Text hud;
     hud.setPosition(0, 0);
     hud.setFillColor(Color::White);
     hud.setCharacterSize(25);
+
+    // Create font object and apply to text
     Font font;
-    font.loadFromFile("fonts/specialagent.ttf");
+    font.loadFromFile("fonts/KGRedHands.ttf");
     hud.setFont(font);
+
+    // Create vertex array
     VertexArray image;
     image.setPrimitiveType(Points);
     image.resize(resolution.x * resolution.y);
 
+    // enum class that allows program to do certain task under certain states;
     enum class State {
         CALCULATING, DISPLAYING
     };
 
     State state = State::CALCULATING;
 
+    // Main loop
     while (window.isOpen())
     {
         // Handle input
         Event event;
         while (window.pollEvent(event))
         {
+            // close windwo when user hits x button
             if (event.type == sf::Event::Closed)
             {
                 window.close();
             }
+
+            //update mouse location for HUD
             if (event.type == sf::Event::MouseMoved)
             {
                 Vector2f points = window.mapPixelToCoords(Mouse::getPosition(window), plane.getView());
                 plane.setMouseLoactaion(points);
             }
 
+            // Detect clicks to either zoom in or zoom out
             if (event.type == sf::Event::MouseButtonPressed)
             {
                 if (event.mouseButton.button == sf::Mouse::Right)
@@ -70,6 +85,7 @@ int main()
             }
         }
 
+        // close if user hits escape
         if (Keyboard::isKeyPressed(Keyboard::Escape))
         {
             window.close();
@@ -79,7 +95,7 @@ int main()
         if (state == State::CALCULATING)
         {
             //Calculation 
-            //two for-loops to check every pixel accross the screen
+            //set each pixel to a color based on number of iterations
             for (int j = 0; j < resolution.x; j++)
             {
                 for (int i = 0; i < resolution.y ; i++)
@@ -94,15 +110,12 @@ int main()
                     plane.iterationsToRGB(iter, R, G, B);
                     image[j + i * resolution.x].color = { R, G, B };
                     //cout << iter << endl;
-                    //cout << image[i].position.x << endl;
-                    //cout << "Color: " << image[j + i * resolution.x].color.r << " " << image[j + i * resolution.x].color.g << " " << image[j + i * resolution.x].color.b << endl;
-
                 }
             }
             state = State::DISPLAYING;
         }
 
-
+        // load text from ComplexPlane class
         plane.loadText(hud);
 
         // Draw Scene

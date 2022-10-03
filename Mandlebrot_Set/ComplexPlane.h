@@ -3,6 +3,7 @@
 using namespace std;
 using namespace sf;
 
+// constants
 const  unsigned int MAX_ITER = 64;
 const double BASE_WIDTH = 4.0;
 const double BASE_HEIGHT = 4.0;
